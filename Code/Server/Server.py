@@ -81,7 +81,7 @@ class Server:
     def send_data(self,connect,data):
         try:
             connect.send(data.encode('utf-8'))
-            #print("send",data)
+            print("sending data: ",data)
         except Exception as e:
             print(e)
     def transmission_video(self):
@@ -160,10 +160,14 @@ class Server:
                 break
             else:
                 cmdArray=allData.split('\n')
-                #print(cmdArray)
+                print(cmdArray)
                 if cmdArray[-1] !="":
                     cmdArray==cmdArray[:-1]
             
+
+
+            print("execution_state: ", self.control.execution_state)
+
             for oneCmd in cmdArray:
                 data=oneCmd.split("#")
                 if data==None or data[0]=='':

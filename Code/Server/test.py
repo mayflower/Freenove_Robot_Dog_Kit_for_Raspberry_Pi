@@ -46,25 +46,30 @@ def test_Ultrasonic():
 from Servo import *
 servo=Servo()
 def test_Servo():
+    # 4 = front left lef
+    # 
     try:
         for i in range(90):
             servo.setServoAngle(4,90-i)
             servo.setServoAngle(7,90-i)
             servo.setServoAngle(8,90+i)
             servo.setServoAngle(11,90+i)
-            time.sleep(0.01)
+            time.sleep(.01)
+        print("first")
         for i in range(90):
             servo.setServoAngle(2,90-i)
             servo.setServoAngle(5,90-i)
             servo.setServoAngle(10,90+i)
             servo.setServoAngle(13,90+i)
-            time.sleep(0.01)
+            time.sleep(.01)
+        print("sec")
         for i in range(60):
             servo.setServoAngle(3,90-i)
             servo.setServoAngle(6,90-i)
             servo.setServoAngle(9,90+i)
             servo.setServoAngle(12,90+i)
-            time.sleep(0.01)
+            time.sleep(.01)
+        print("third")
         print ("\nEnd of program")      
     except KeyboardInterrupt:
         print ("\nEnd of program")

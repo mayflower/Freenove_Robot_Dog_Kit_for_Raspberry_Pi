@@ -32,6 +32,7 @@ class Control:
         self.Thread_conditiona=threading.Thread(target=self.condition)
         self.calibration()
         self.relax(True)
+        self.execution_state = "AWAIT_ORDER" # or EXECUTE_ORDER
     def readFromTxt(self,filename):
         file1 = open(filename + ".txt", "r")
         list_row = file1.readlines()
@@ -279,6 +280,7 @@ class Control:
                 self.point[i*2+1][2]=Z2+((-1)**i)*10
         self.run()
     def backWard(self):
+        self.execution_state="EXECUTE_ORDER"
         for i in range(450,89,-self.speed):
             X1=12*math.cos(i*math.pi/180)
             Y1=6*math.sin(i*math.pi/180)+self.height
@@ -291,6 +293,7 @@ class Control:
             self.changeCoordinates('backWard',X1,Y1,0,X2,Y2,0)
             #time.sleep(0.01)
     def forWard(self):
+        self.execution_state="EXECUTE_ORDER"
         for i in range(90,451,self.speed):
             X1=12*math.cos(i*math.pi/180)
             Y1=6*math.sin(i*math.pi/180)+self.height
@@ -303,6 +306,7 @@ class Control:
             self.changeCoordinates('forWard',X1,Y1,0,X2,Y2,0)
             #time.sleep(0.01)
     def turnLeft(self):
+        self.execution_state="EXECUTE_ORDER"
         for i in range(0,361,self.speed):
             X1=3*math.cos(i*math.pi/180)
             Y1=8*math.sin(i*math.pi/180)+self.height
@@ -318,7 +322,8 @@ class Control:
             #time.sleep(0.01)
     
     def turnRight(self):
-         for i in range(0,361,self.speed):
+        self.execution_state="EXECUTE_ORDER"
+        for i in range(0,361,self.speed):
             X1=3*math.cos(i*math.pi/180)
             Y1=8*math.sin(i*math.pi/180)+self.height
             X2=3*math.cos((i+180)*math.pi/180)
@@ -343,7 +348,9 @@ class Control:
                 self.point[i][1]+=p[i][1]
                 self.point[i][2]+=p[i][2]
             self.run()
+        self.execution_state="AWAIT_ORDER"
     def setpLeft(self):
+        self.execution_state="EXECUTE_ORDER"
         for i in range(90,451,self.speed):
             Z1=10*math.cos(i*math.pi/180)
             Y1=5*math.sin(i*math.pi/180)+self.height
@@ -356,6 +363,7 @@ class Control:
             self.changeCoordinates('setpLeft',0,Y1,Z1,0,Y2,Z2)
             #time.sleep(0.01)
     def setpRight(self):
+        self.execution_state="EXECUTE_ORDER"
         for i in range(450,89,-self.speed):
             Z1=10*math.cos(i*math.pi/180)
             Y1=5*math.sin(i*math.pi/180)+self.height
@@ -368,6 +376,7 @@ class Control:
             self.changeCoordinates('setpRight',0,Y1,Z1,0,Y2,Z2)
             #time.sleep(0.01)
     def relax(self,flag=False):
+        self.execution_state="EXECUTE_ORDER"
         if flag==True:
             p=[[55, 78, 0], [55, 78, 0], [55, 78, 0], [55, 78, 0]]
             for i in range(4):
@@ -387,11 +396,14 @@ class Control:
             self.stop()
             self.move_timeout=time.time()
     def upAndDown(self,var):
+        self.execution_state="EXECUTE_ORDER"
         self.height=var+99
         self.changeCoordinates('height',0,self.height,0,0,self.height,0)
     def beforeAndAfter(self,var):
+        self.execution_state="EXECUTE_ORDER"
         self.changeCoordinates('horizon',var,self.height,0,var,self.height,0)
     def attitude(self,r,p,y):
+        self.execution_state="EXECUTE_ORDER"
         r=self.map(int(r),-20,20,-10,10)
         p=self.map(int(p),-20,20,-10,10)
         y=self.map(int(y),-20,20,-10,10)
